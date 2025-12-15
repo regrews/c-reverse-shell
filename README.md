@@ -66,6 +66,8 @@ gcc -std=c99 linux.c -o rsh.out -D WAIT_FOR_CLIENT
 - Windows:
 ```sh
 i686-w64-mingw32-gcc-win32 -std=c99 windows.c -o rsh.exe -lws2_32
+
+make windows CC_WIN=i686-w64-mingw32-gcc
 ```
 ```sh
 i686-w64-mingw32-gcc-win32 -std=c99 windows.c -o rsh.exe -lws2_32 -D WAIT_FOR_CLIENT
@@ -74,3 +76,6 @@ i686-w64-mingw32-gcc-win32 -std=c99 windows.c -o rsh.exe -lws2_32 -D WAIT_FOR_CL
 ##
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/thats-how-they-get-you.svg)](https://forthebadge.com)
+
+
+

