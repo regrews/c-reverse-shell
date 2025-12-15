@@ -14,6 +14,14 @@ CC_WIN = i686-w64-mingw32-gcc-win32
 
 CFLAGS = -std=c99
 
+ifdef IP
+CFLAGS += -DCLIENT_IP=\"$(IP)\"
+endif
+
+ifdef PORT
+CFLAGS += -DCLIENT_PORT=$(PORT)
+endif
+
 ##################################################
 #                    SOURCES                     #
 ##################################################
@@ -44,7 +52,7 @@ ifeq ($(WAIT_FOR_CLIENT),TRUE)
 $(NAME_WIN): CFLAGS += -D WAIT_FOR_CLIENT
 endif
 $(NAME_WIN): $(SRC_WIN)
-	$(CC_WIN) $(CFLAGS) $^ -o $@ -lws2_32
+	$(CC_WIN) $(CFLAGS) $^ -o $@
 
 PHONY += clean
 clean:
